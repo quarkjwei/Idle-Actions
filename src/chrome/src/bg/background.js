@@ -10,17 +10,16 @@ var close= {type: "close"}
 //goto takes a modifier w/ enum of "tab", "window",and "matched"
 //tab opens specified url in a new tab
 //window opens specified url in a new window
-//active opens specified url in the active tab
 //matched opens specified url in the matched tab(s)
 var logoutGoogle = {type: "goto", target: "https://accounts.google.com/logout", modifier: "tab"}
 var homeGithub = {type: "goto", target: "http://github.com/", modifier: "matched"}
-
+var routerPage = {type: "goto", target: "http://192.168.1.1/"}
 
 //Targets are defined using match-patterns, for now.
 var instruction1 = {
-  target: "*://mail.google.com/*",
-  time: 20,
-  actions: [close, logoutGoogle]
+  target: "*://192.168.1.1/*",
+  time: 15,
+  actions: [routerPage]
 };
 var instruction2 = {
   target: "*://github.com/*",
