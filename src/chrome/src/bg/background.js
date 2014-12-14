@@ -11,20 +11,22 @@ var close= {type: "close"}
 //tab opens specified url in a new tab
 //window opens specified url in a new window
 //matched opens specified url in the matched tab(s)
-var logoutGoogle = {type: "goto", target: "https://accounts.google.com/logout", modifier: "tab"}
-var homeGithub = {type: "goto", target: "http://github.com/", modifier: "matched"}
-var routerPage = {type: "goto", target: "http://192.168.1.1/"}
+var logoutGoogle = {type: "goto", target: "https://accounts.google.com/logout", modifier: "tab"};
+var homeGithub = {type: "goto", target: "http://github.com/", modifier: "matched"};
+var routerPage = {type: "goto", target: "http://192.168.1.1/"};
+//modifier is delay in ms. Window closes once url is loaded, plus delay.
+var github = {type: "gotoandclose", target: "http://github.com/", modifier: "1000"};
 
 //Targets are defined using match-patterns, for now.
 var instruction1 = {
-  target: "*://192.168.1.1/*",
+  target: "*://mail.google.com/*",
   time: 15,
-  actions: [routerPage]
+  actions: [logoutGoogle]
 };
 var instruction2 = {
   target: "*://github.com/*",
   time: 15,
-  actions: [homeGithub]
+  actions: [github]
 };
 
 var instructions = [
@@ -73,13 +75,27 @@ function performAction(action, tabId){
   if(action.type == "close"){
     chrome.tabs.remove(tabId);
   }
-  else if(action.type=="goto"){
-    if(action.modifier == "tab")
-      chrome.tabs.create({url: action.target});
-    if(action.modifier == "window")
-      chrome.windows.create({url: action.target})
+  else if(action.type == "goto"){
+    if(!action.modifier)
+      action.modifier = "matched";
     if(action.modifier == "matched")
       chrome.tabs.update(tabId, {url: action.target});
+    else if(action.modifier == "tab")
+      chrome.tabs.create({url: action.target});
+    else if(action.modifier == "window")
+      chrome.windows.create({url: action.target})
+  }
+  else if(action.type == "gotoandclose"){
+    if(!action.modifier)
+      action.modifier = 0;
+    chrome.tabs.create({url: action.target}, function(tab){
+      var tabid = tab.id;
+      chrome.tabs.onUpdated.addListener(function(tabid, changeInfo){
+        if(changeInfo.status == "complete"){
+          setTimeout(function(){chrome.tabs.remove(tab.id);}, action.modifier);
+        }
+      });
+    });
   }
 }
 
