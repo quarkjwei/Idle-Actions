@@ -52,7 +52,7 @@
 			<div class="input-group">
 				<input type="url" class="form-control url-pattern" aria-label="Enter URL Pattern" placeholder="Enter URL Pattern">
 				<span class="input-group-btn">
-					<button type="button" class="btn btn-default add-domain" aria-label="Add Domain">
+					<button type="button" class="btn btn-default add-url-pattern" aria-label="Add Domain">
 						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					</button>
 				</span>
@@ -64,15 +64,35 @@
 				<input type="text" class="form-control idle-time" aria-label="Idle Time">
 				<span class="input-group-addon">seconds</span>
 			</div>
+			then
 		</span>
 		<span>
-			then
-			<select class="form-control">
-				<option>Close</option>
-				<option>Goto</option>
-				<option>Goto and Close</option>
-			</select>
-			Close has no options. Goto takes a text input of a url, as well as another select for some modifier options (tab, window matched). Goto and close takes a text input modifier of delay (in ms) for the window to close.
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default add-action" aria-label="Add Action">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+				</span>
+				<select class="form-control">
+					<option>Close</option>
+					<option>Goto</option>
+					<option>Goto and Close</option>
+				</select>
+			</div>
+			<span class="action-modifiers">
+			</span>
+		</span>
+	</div>
+	<div class="form-group">
+		<span>
+			<div class="input-group">
+				<input type="url" class="form-control url-pattern" aria-label="Enter URL Pattern" placeholder="Enter URL Pattern">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default add-url-pattern" aria-label="Add Domain">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+				</span>
+			</div>
 		</span>
 	</div>
 </div>
