@@ -25,46 +25,56 @@
 	</nav>
 <div class="container">
 	<form class="form-inline" role="form">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				Instruction Set 1
-				<button type="button" class="btn btn-danger btn-xs pull-right" aria-label="Remove Instruction">
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-			</div>
-			<div class="panel-body">
-					<div class="form-group">
-						<span>When idle on</span>
-						<span>
-							<div class="input-group">
-								<input type="url" class="form-control url-pattern" aria-label="Enter URL Pattern" placeholder="Enter URL Pattern">
-								<span class="input-group-btn">
-									<button type="button" class="btn btn-default" aria-label="Add Domain">
-										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-									</button>
-								</span>
-							</div>
-						</span>
-						<span>
-							for
-							<div class="input-group">
-								<input type="text" class="form-control idle-time" aria-label="Idle Time">
-								<span class="input-group-addon">seconds</span>
-							</div>
-						</span>
-						<span>
-							then
-							<select class="form-control">
-								<option>Close</option>
-								<option>Goto</option>
-								<option>Goto and Close</option>
-							</select>
-							Close has no options. Goto takes a text input of a url, as well as another select for some modifier options (tab, window matched). Goto and close takes a text input modifier of delay (in ms) for the window to close.
-						</span>
-					</div>
-			</div>
-		</div>
 	</form>
+	<div>
+		<button type="button" class="btn btn-success add-item">
+			Add Item
+		</button>
+		<button type="button" class="btn btn-primary">
+			Save
+		</button>
+	</div>
+</div>
+<div id="template" class="hidden">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			Item <span class="index">1</span>
+			<button type="button" class="btn btn-danger btn-xs pull-right remove-item" aria-label="Remove Instruction">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+			</button>
+		</div>
+		<div class="panel-body">
+		</div>
+	</div>
+	<div class="form-group">
+		<span class="display-once">When idle on</span>
+		<span>
+			<div class="input-group">
+				<input type="url" class="form-control url-pattern" aria-label="Enter URL Pattern" placeholder="Enter URL Pattern">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default add-domain" aria-label="Add Domain">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+				</span>
+			</div>
+		</span>
+		<span class="display-once">
+			for
+			<div class="input-group">
+				<input type="text" class="form-control idle-time" aria-label="Idle Time">
+				<span class="input-group-addon">seconds</span>
+			</div>
+		</span>
+		<span>
+			then
+			<select class="form-control">
+				<option>Close</option>
+				<option>Goto</option>
+				<option>Goto and Close</option>
+			</select>
+			Close has no options. Goto takes a text input of a url, as well as another select for some modifier options (tab, window matched). Goto and close takes a text input modifier of delay (in ms) for the window to close.
+		</span>
+	</div>
 </div>
 </body>
 </html>
