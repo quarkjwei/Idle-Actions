@@ -3,6 +3,9 @@ $(document).ready(function() {
     $(this).parent().parent().remove();
   });
   $(".add-item").click(function(){
-    $("#template").children().first().clone().appendTo("form");
+    var panel = $("#template").children().first().clone();
+    var formGroup = $("#template").children(":nth-child(2)").clone();
+    panel.find(".panel-body").append(formGroup);
+    $("form").append(panel);
   });
 });
