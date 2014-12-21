@@ -2,14 +2,14 @@ $(document).ready(function() {
   //Buttons
   //Add Items
   $(".add-item").click(function(){
-    var panel = $("#template").children(":nth-child(1)").clone();
-    var urlGroup = $("#template").children(":nth-child(2)").clone();
-    var actionGroup = $("#template").children(":nth-child(3)").clone();
+    var panel = $("#templates").children(":nth-child(1)").clone();
+    var urlGroup = $("#templates").children(":nth-child(2)").clone();
+    var actionGroup = $("#templates").children(":nth-child(3)").clone();
     panel.find(".url-container").html(urlGroup);
     panel.find(".action-container").html(actionGroup);
     panel.hide();
     $("form").append(panel);
-    $("form").children().last().slideDown();
+    panel.slideDown();
   });
   //Remove Items
   $("body").on("click", ".remove-item", function(){
@@ -19,23 +19,23 @@ $(document).ready(function() {
   });
   //Add URL Pattern
   $("body").on("click", ".add-url-pattern", function(){
-    var urlGroup = $("#template").children(":nth-child(2)").clone();
+    var urlGroup = $("#templates").children(":nth-child(2)").clone();
     urlGroup.find(".display-once").addClass("invisible");
     urlGroup.find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
     urlGroup.find(".add-url-pattern").removeClass("add-url-pattern").addClass("remove-url-pattern");
     urlGroup.hide();
     $(this).parentsUntil(".panel-body").last().append(urlGroup);
-    $(".url-container").children().last().slideDown();
+    urlGroup.slideDown();
   });
   //Add Action
   $("body").on("click", ".add-action", function(){
-    var actionGroup = $("#template").children(":nth-child(3)").clone();
+    var actionGroup = $("#templates").children(":nth-child(3)").clone();
     actionGroup.find(".display-once").addClass("invisible");
     actionGroup.find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
     actionGroup.find(".add-action").removeClass("add-action").addClass("remove-action");
     actionGroup.hide();
     $(this).parentsUntil(".panel-body").last().append(actionGroup);
-    $(".action-container").children().last().slideDown();
+    actionGroup.slideDown();
 
   });
   //Remove URL Pattern
@@ -51,5 +51,9 @@ $(document).ready(function() {
     marked.slideUp(function(){
       marked.remove();
     });
+  });
+  //
+  $("body").on("change", ".form-control", function(){
+    alert();
   });
 });
