@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://idle-alert/locale/options.dtd">
+<prefwindow id="idle-alert-preferences"
+            title="&prefwindow.title;"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <!-- <script type="application/javascript" src="preferences.js" /> -->
+  <script type="application/x-javascript" src="chrome://idlealert/content/idlealert.js"/>
+  <script>
+    function deleteSelection()
+    {
+      var list = document.getElementById('urlList');
+      var count = list.selectedCount;
+      while (count--){
+        var item = list.selectedItems[0];
+        list.removeItemAt(list.getIndexOfItem(item));
+      }
+    }
+
+    function addItem(){
+      var url = document.getElementById('url').value;
+      //check user input
+      if(url){
+        document.getElementById('urlList').appendItem(url, url);
+      }
+      document.getElementById('url').value = '';
+    }
+  </script>
+  <prefpane id="idlealert-prefpane" label="&prefpane.title;">
+
+    <preferences>
+      <preference id="extensions.idlealert.idletime"
+                  name="extensions.idlealert.idletime"
+                  type="int" />
+      <preference id="extensions.idlealert.action"
+                  name="extensions.idlealert.action"
+                  type="int" />
+      <preference id="extensions.idlealert.unit"
+                  name="extensions.idlealert.unit"
+                  type="int" />
+    </preferences>
+
+    <groupbox id="IdleAlertGroup">
+      <caption label="&group.label;"/>
+
+      <grid>
+        <columns>
+          <column />
+          <column />
+          <column />
+        </columns>
+        <rows>
+
+    <row align="center">
+      <label value="&restoredTabs.label;"
+             control="menuRestoredTabs" />
+      <vbox align="start">
+        <textbox  id="idleTime" 
+                  type="number"
+                  preference="extensions.idlealert.idletime"/>
+      </vbox>
+      <menulist id="idleTimeUnit"
+                preference="extensions.idlealert.unit">
+        <menupopup>
+          <menuitem label="&timeoutSecs.label;" value="1"/>
+          <menuitem label="&timeoutMins.label;" value="60"/>
+          <menuitem label="&timeoutHours.label;" value="3600"/>
+        </menupopup>
+      </menulist>
+    </row>
+
+    <separator class="thin"/>
+    
+    <row>
+      <vbox>  
+        <label value="&urlList.new;"
+          control="menuRestoredTabs" />
+      </vbox>
+      <vbox>
+        <textbox id="url" />
+      </vbox>
+      <vbox>
+        <menulist id="urlAction"
+                  preference="extensions.idlealert.action">
+          <menupopup>
+            <menuitem label="&idleAction.close;" value="0"/>
+            <menuitem label="&idleAction.log;" value="1"/>
+            <menuitem label="&idleAction.closeLog;" value="2"/>
+          </menupopup>
+        </menulist>
+        <button id="addUrl" 
+                label="Add" 
+                oncommand ="addItem();"/>
+      </vbox>
+    </row>
+
+    <separator class="thin"/>
+
+    <row>
+      <vbox>  
+        <label value="&urlList.label;"/>
+        <description style="font: small-caption;
+                      font-weight: normal;
+                      width: 0; /* trigger word wrapping */
+                      margin: 0.5em 1em 0em 1em;">&hostWhitelist.description;</description>
+      </vbox>
+
+      <!--<listbox id="urlList" seltype="multiple">
+        <listitem label="http://google.com/logout"/>
+        <listitem label="http://vcu.edu/logout"/>
+      </listbox>-->
+
+      <listbox  id="urlList"
+                seltype="multiple"
+                onselect="IdleAlert.listEntrySelected(event);">
+      </listbox>
+      
+      <vbox>
+        <!-- <button label="Remove" oncommand="deleteSelection();" /> -->
+        <button id="listRemove"
+                label="Remove"
+                oncommand="IdleAlert.removeListEntry();" />
+      </vbox>
+    </row>
+
+        </rows>
+      </grid>
+    </groupbox>
+
+  </prefpane>
+
+</prefwindow>

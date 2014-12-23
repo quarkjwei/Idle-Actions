@@ -1,0 +1,3 @@
+content   idle-alert                 content/
+resource  idle-alert                 modules/
+locale    idle-alert   en-US         locale/en-US/

@@ -1,0 +1,2 @@
+content   idle-alert                 jar:idle-alert.jar!/content/
+resource  idle-alert                 modules/
