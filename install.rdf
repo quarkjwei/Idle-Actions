@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
-    <em:id>idlealert@johnheng.net</em:id>
+    <em:id>idleactions@johnheng.net</em:id>
     <em:type>2</em:type>
-    <em:name>Idle Alert</em:name>
+    <em:name>Idle Actions</em:name>
     <em:version>0.1</em:version>
     <em:description>This extension executes user-defined actions when the browser is idle for a set amount of time.</em:description>
     <em:homepageURL>https://github.com/johnheng</em:homepageURL>
@@ -17,13 +17,5 @@
         <em:maxVersion>4.0.*</em:maxVersion>
       </Description>
     </em:targetApplication>
-    <!-- SeaMonkey 
-    <em:targetApplication>
-      <Description>
-        <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
-        <em:minVersion>2.0</em:minVersion>
-        <em:maxVersion>2.1b1</em:maxVersion>
-      </Description>
-    </em:targetApplication>-->
   </Description>
 </RDF>
