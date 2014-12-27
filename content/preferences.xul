@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE prefwindow SYSTEM "chrome://idle-alert/locale/options.dtd">
+<!DOCTYPE prefwindow SYSTEM "chrome://idle-actions/locale/options.dtd">
 <prefwindow id="idle-alert-preferences"
             title="&prefwindow.title;"
-            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <!-- <script type="application/javascript" src="preferences.js" /> -->
-  <script type="application/x-javascript" src="chrome://idlealert/content/idlealert.js"/>
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            onload="IdleAlert.startup();"
+            onunload="IdleAlert.shutdown();">
+  <script type="application/javascript" src="preferences.js" />
+
   <script>
     function deleteSelection()
     {
@@ -25,6 +27,18 @@
       }
       document.getElementById('url').value = '';
     }
+
+    function loadList(){
+      if(!list){ return; }
+      var newList = list.split(";");
+
+      var urlList = document.getElementById('urlList');
+      newList.forEach(function(host){
+        let row = document.createElement("listitem");
+        row.setAttribute("label", host);
+        urlList.appendChild(row)
+      })
+    }
   </script>
   <prefpane id="idlealert-prefpane" label="&prefpane.title;">
 
@@ -38,6 +52,9 @@
       <preference id="extensions.idlealert.unit"
                   name="extensions.idlealert.unit"
                   type="int" />
+      <preference id="extensions.idlealert.list"
+                  name="extensions.idlealert.list"
+                  type="text" />
     </preferences>
 
     <groupbox id="IdleAlertGroup">
@@ -90,7 +107,8 @@
         </menulist>
         <button id="addUrl" 
                 label="Add" 
-                oncommand ="addItem();"/>
+                oncommand="IdleAlert.addItem();"
+                />
       </vbox>
     </row>
 

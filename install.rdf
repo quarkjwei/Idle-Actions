@@ -8,7 +8,7 @@
     <em:description>This extension executes user-defined actions when the browser is idle for a set amount of time.</em:description>
     <em:homepageURL>https://github.com/johnheng</em:homepageURL>
     <em:creator>John Heng / Quark Wei</em:creator>
-    <em:optionsURL>chrome://idle-alert/content/preferences.xul</em:optionsURL>
+    <em:optionsURL>chrome://idle-actions/content/preferences.xul</em:optionsURL>
     <!-- Firefox -->
     <em:targetApplication>
       <Description>
