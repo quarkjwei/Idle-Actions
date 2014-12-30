@@ -4,7 +4,7 @@ var IdleAlert = {
 	action: "",
 
 	//initialize the extension
-	/*startup: function(){
+	startup: function(){
 		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("idlealert.");
@@ -16,7 +16,7 @@ var IdleAlert = {
 		this.refreshInformation();
 		
 		window.setInterval(this.refreshInformation, 10*60*1000);
-	},*/
+	},
 
 	//shut down, save prefs and turn off the observer
 	shutdown: function(){
