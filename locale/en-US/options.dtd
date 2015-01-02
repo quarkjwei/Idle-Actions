@@ -1,0 +1,19 @@
+<!ENTITY prefwindow.title "Idle preferences">
+<!ENTITY prefpane.title "Idle preferences">
+<!ENTITY group.label "Idle preferences">
+<!ENTITY restoredTabs.label "Idle time: ">
+<!ENTITY backgroundTabs.label "Action upon idle: ">
+<!ENTITY timeoutSecs.label "secs">
+<!ENTITY timeoutMins.label "mins">
+<!ENTITY timeoutHours.label "hours">
+<!ENTITY timeoutDays.label "days">
+<!ENTITY hostWhitelist.label "URL Action List">
+<!ENTITY hostWhitelistRemove.label "Remove">
+<!ENTITY hostWhitelistAdd.label "Add">
+<!ENTITY hostWhitelist.description "This is a list of URLs that the browser will go to upon idle time.">
+<!ENTITY idleAction.close "Close tab">
+<!ENTITY idleAction.log "Go to">
+<!ENTITY idleAction.closeLog "Close and go to">
+<!ENTITY idleAction.action "Action">
+<!ENTITY urlList.label "URL List">
+<!ENTITY urlList.new "Add a URL">

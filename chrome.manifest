@@ -1,0 +1,5 @@
+content idle-actions chrome/content/
+locale idle-actions en-US locale/en-US/
+
+# Firefox
+chrome://idle-actions/content/preferences.xul
