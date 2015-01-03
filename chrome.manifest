@@ -1,5 +1,6 @@
-content idle-actions chrome/content/
+content idle-actions content/
 locale idle-actions en-US locale/en-US/
+overlay chrome://browser/content/browser.xul   chrome://idle-actions/content/browser-overlay.xul
 
 # Firefox
 chrome://idle-actions/content/preferences.xul
