@@ -14,10 +14,12 @@ body{
 	float: left;
 	padding-top: 5px;
 }
+.stacked{
+  float: left;
+  clear: both;
+}
 .container {
-	width: auto;
-	min-width: 830px;
-	max-width: 1080px;
+	width: 910px;
 }
 .footer {
   position: fixed;
@@ -29,3 +31,11 @@ body{
   padding-top: 10px;
   z-index: 999;
 }
+
+.modifier-goto {
+  width: 150px !important;
+}
+.modifier-gotoandclose{
+  width: 5em !important;
+}
+.

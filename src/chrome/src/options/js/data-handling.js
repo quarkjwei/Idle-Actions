@@ -7,6 +7,7 @@ $(document).ready(function() {
     var actionGroup = $("#templates").children(":nth-child(3)").clone();
     panel.find(".url-container").html(urlGroup);
     panel.find(".action-container").html(actionGroup);
+    panel.find(".index").html($(".index").length);
     panel.hide();
     $("form").append(panel);
     panel.slideDown();
@@ -14,7 +15,10 @@ $(document).ready(function() {
   //Remove Items
   $("body").on("click", ".remove-item", function(){
     $(this).parentsUntil("form").last().slideUp(function(){
-      $(this).parentsUntil("form").last().remove();
+      $(this).remove();
+      $("span.index").html(function(index, oldhtml){
+      return index + 1;
+      });
     });
   });
   //Add URL Pattern
@@ -54,6 +58,16 @@ $(document).ready(function() {
   });
   //
   $("body").on("change", ".form-control", function(){
-    alert();
+    var value = $(this).val();
+    $(this).parent().nextAll().remove();
+    if(value == "Goto") {
+      var inputGroup = $("#action_templates").children(":nth-child(1)").html();
+      $(this).parent().after(inputGroup);
+    }
+    else if (value == "Goto and Close") {
+      var inputGroup = $("#action_templates").children(":nth-child(2)").html();
+      $(this).parent().after(inputGroup);
+    }
+
   });
 });
