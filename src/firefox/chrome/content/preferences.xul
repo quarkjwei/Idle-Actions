@@ -107,7 +107,7 @@
         </menulist>
         <button id="addUrl" 
                 label="Add" 
-                oncommand="IdleAlert.addItem();"
+                oncommand="addItem();"
                 />
       </vbox>
     </row>
@@ -137,7 +137,7 @@
         <!-- <button label="Remove" oncommand="deleteSelection();" /> -->
         <button id="listRemove"
                 label="Remove"
-                oncommand="IdleAlert.removeListEntry();" />
+                oncommand="deleteSelection();" />
       </vbox>
     </row>
 
