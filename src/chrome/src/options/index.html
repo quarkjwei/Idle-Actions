@@ -73,7 +73,7 @@
 	</div>
 
 	<div class="form-group" style="padding-left: 44px;">
-		<div class="input-group" style="left: -39px;">
+		<div class="input-group stacked" style="margin-left: -39px;">
 			<span class="input-group-btn">
 				<button type="button" class="btn btn-default add-action" aria-label="Add Action">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -84,20 +84,35 @@
 				<option>Goto</option>
 				<option>Goto and Close</option>
 			</select>
-			<span class="action-modifiers">
 			</span>
 		</div>
 	</div>
 
-	<div class="input-group">
-		<input type="url" class="form-control target" aria-label="Enter Target URL" placeholder="Enter Target URL">
-		<select class="form-control">
-			<option>Matched</option>
-			<option>New Tab</option>
-			<option>New Window</option>
-		</select>
-	</div>
-
 </div>
+
+<div id="action_templates" class="hidden">
+	Goto
+	<div>
+		<input type="url" class="form-control target stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
+		<div class="input-group stacked">
+			<span class="input-group-addon">Open In</span>
+			<select class="form-control modifier modifier-goto stacked">
+				<option>Matched Tabs</option>
+				<option>New Tab</option>
+				<option>New Window</option>
+			</select>
+		</div>
+	</div>
+	Goto and Close
+	<div>
+		<input type="url" class="form-control target stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
+		<div class="input-group stacked">
+			<span class="input-group-addon">Close After</span>
+			<input type="text" class="form-control modifier modifier-gotoandclose" aria-label="Idle Time">
+			<span class="input-group-addon">Milliseconds</span>
+		</div>
+	</div>
+</div>
+
 </body>
 </html>

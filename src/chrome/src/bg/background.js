@@ -4,7 +4,7 @@
 //     "sample_setting": "This is how you use Store.js to remember values"
 // });
 
-//close actions should happen per page. But goto (except for current) should only occur once.
+//close actions should happen per page. But goto (except for matched) should only occur once.
 
 var close= {type: "close"}
 //goto takes a modifier w/ enum of "tab", "window",and "matched"
