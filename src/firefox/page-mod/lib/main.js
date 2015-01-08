@@ -35,3 +35,5 @@ pageMod.PageMod({
   //contentScript: 'document.body.innerHTML = ' +
   //               ' "<h1>Page matches ruleset</h1>";'
 });
+
+//*.vcu.*

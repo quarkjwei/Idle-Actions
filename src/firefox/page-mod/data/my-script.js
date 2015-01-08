@@ -1,6 +1,7 @@
 var inactivityTime = function () {
     var t;
-    window.onload = resetTimer;
+    
+    document.onload = setTimer(3000);
     window.onmousemove = resetTimer;
     window.onmousedown = resetTimer; // catches touchscreen presses
     window.onclick = resetTimer;     // catches touchpad clicks
@@ -12,6 +13,7 @@ var inactivityTime = function () {
 
         //location.href = 'https://accounts.google.com/logout';
         location.href = 'https://my.vcu.edu/c/portal/logout';
+        
         //console.log(new Date().toTimeString() + ": away");
 
         //tab - new tab
@@ -28,9 +30,14 @@ var inactivityTime = function () {
         }
     }
 
+    function setTimer(time){
+        t = setTimeout(logout, time);
+        console.log(new Date().toTimeString() + ": timer set to " + time);
+    }
+
     function resetTimer() {
         clearTimeout(t);
-        t = setTimeout(logout, 3000)
+        t = setTimeout(logout, 3000);
         // 1000 milisec = 1 sec
         console.log(new Date().toTimeString() + ": active");
     }

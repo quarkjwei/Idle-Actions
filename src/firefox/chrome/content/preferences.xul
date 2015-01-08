@@ -6,7 +6,7 @@
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
             onload="IdleAlert.startup();"
             onunload="IdleAlert.shutdown();">
-  <script type="application/javascript" src="preferences.js" />
+  <script type="application/javascript" src="chrome://idle-actions/chrome/content/preferences.js" />
 
   <script>
     function deleteSelection()
@@ -107,7 +107,7 @@
         </menulist>
         <button id="addUrl" 
                 label="Add" 
-                oncommand="addItem();"
+                oncommand="IdleAlert.addItem();"
                 />
       </vbox>
     </row>
@@ -137,7 +137,7 @@
         <!-- <button label="Remove" oncommand="deleteSelection();" /> -->
         <button id="listRemove"
                 label="Remove"
-                oncommand="deleteSelection();" />
+                oncommand="IdleAlert.removeListEntry();" />
       </vbox>
     </row>
 
