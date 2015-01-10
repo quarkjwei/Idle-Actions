@@ -1,4 +1,10 @@
 $(document).ready(function() {
+  //Load Data
+  chrome.storage.local.get("itemset", function(result){
+    var itemset = result.itemset;
+    if(itemset.length > 1)
+      loadData(itemset);
+  });
   //Buttons
   //Add Items
   $(".add-item").click(function(){
@@ -95,7 +101,7 @@ $(document).ready(function() {
       $(this).find('.action-container').find('.form-group').each(function(){
         var action = new Object();
         action["type"] = $(this).find('.action-type').val();
-        if(action["type"] != "close"){
+        if(action["type"] != "Close"){
           action["target"] = $(this).find('.target').val();
           action["modifier"] = $(this).find('.modifier').val();
         }
@@ -107,3 +113,32 @@ $(document).ready(function() {
     });
   });
 });
+function loadData(itemset){
+  for(var i = 0; i < itemset.length; i++){
+    //Fill the url-pattern fields
+    $(".add-item").click();
+    for(var j = 0; j < itemset[i]["matchPatterns"].length; j++){
+      if(j > 0)
+        $(".add-url-pattern").eq(i).click();
+      $(".item").eq(i).find(".url-pattern").eq(j).val(itemset[i]["matchPatterns"][j]);
+    }
+    //Fill the idle time field
+    $(".idle-time").eq(i).val(itemset[i]["time"]);
+    //Fill the action fields
+    for(var j = 0; j < itemset[i]["actions"].length; j++){
+      if(j > 0)
+        $(".add-action").eq(i).click();
+      var actionForm = $(".item").eq(i).find(".action-container").find(".form-group").eq(j);
+      var actionType = itemset[i]["actions"][j]["type"];
+      actionForm.find(".action-type").val(actionType);
+      actionForm.find(".action-type").trigger("change");
+      if(actionType != "Close"){
+        actionForm.find(".target").val(itemset[i]["actions"][j]["target"]);
+        actionForm.find(".modifier").val(itemset[i]["actions"][j]["modifier"]);
+      }
+    }
+  }
+}
+function clearData(){
+
+}
