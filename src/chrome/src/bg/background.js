@@ -1,39 +1,16 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
-
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
-
-//close actions should happen per page. But goto (except for matched) should only occur once.
-
-var close= {type: "close"}
-//goto takes a modifier w/ enum of "tab", "window",and "matched"
-//tab opens specified url in a new tab
-//window opens specified url in a new window
-//matched opens specified url in the matched tab(s)
-var logoutGoogle = {type: "goto", target: "https://accounts.google.com/logout", modifier: "tab"};
-var homeGithub = {type: "goto", target: "http://github.com/", modifier: "matched"};
-var routerPage = {type: "goto", target: "http://192.168.1.1/"};
-//modifier is delay in ms. Window closes once url is loaded, plus delay.
-var github = {type: "gotoandclose", target: "http://github.com/", modifier: "1000"};
 
 //Targets are defined using match-patterns, for now.
 var instruction1 = {
-  target: "*://mail.google.com/*",
-  time: 15,
-  actions: [logoutGoogle]
-};
-var instruction2 = {
-  target: "*://github.com/*",
-  time: 15,
-  actions: [github]
+  matchPatterns: "none",
+  time: 15
 };
 
-var instructions = [
-  instruction1,
-  instruction2
-];
-
+var instructions = [instruction1];
+chrome.storage.local.get("itemset", function(result){
+  instructions = result.itemset;
+  if(instructions.length < 1)
+    throw new Error("There are no instructions to follow!");
+});
 //example of using a message handler from the inject scripts
 chrome.extension.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -42,10 +19,10 @@ chrome.extension.onMessage.addListener(
   });
 
   //sort actions by time (ascending)
-  instructions.sort(function(a, b){return a.time-b.time});
+  instructions.sort(function(a, b){return a["time"]-b["time"]});
 
   var counter = 0;
-  chrome.idle.setDetectionInterval(instructions[counter].time);
+  chrome.idle.setDetectionInterval(instructions[counter]["time"]);
 
 
   chrome.idle.onStateChanged.addListener(function(newState) {
@@ -56,11 +33,11 @@ chrome.extension.onMessage.addListener(
       //If there are still actions remaining
       if(counter + 1 < instructions.length){
         counter++;
-        if(instructions[counter].time == instructions[counter-1].time){
+        if(instructions[counter]["time"] == instructions[counter-1]["time"]){
           applyInstructionToTabs(instructions[counter]);
         }
         else{
-          chrome.idle.setDetectionInterval(instructions[counter].time);
+          chrome.idle.setDetectionInterval(instructions[counter]["time"]);
         }
       }
     }
@@ -72,20 +49,20 @@ chrome.extension.onMessage.addListener(
   });
 
 function performAction(action, tabId){
-  if(action.type == "close"){
+  if(action.type == "Close"){
     chrome.tabs.remove(tabId);
   }
-  else if(action.type == "goto"){
+  else if(action.type == "Goto"){
     if(!action.modifier)
-      action.modifier = "matched";
-    if(action.modifier == "matched")
+      action.modifier = "Matched Tabs";
+    if(action.modifier == "Matched Tabs")
       chrome.tabs.update(tabId, {url: action.target});
-    else if(action.modifier == "tab")
+    else if(action.modifier == "New Tab")
       chrome.tabs.create({url: action.target});
-    else if(action.modifier == "window")
+    else if(action.modifier == "New Window")
       chrome.windows.create({url: action.target})
   }
-  else if(action.type == "gotoandclose"){
+  else if(action.type == "Goto and Close"){
     if(!action.modifier)
       action.modifier = 0;
     chrome.tabs.create({url: action.target}, function(tab){
@@ -100,11 +77,11 @@ function performAction(action, tabId){
 }
 
 function applyInstructionToTabs(instruction){
-  chrome.tabs.query({url: instruction.target}, function(tabs) {
+  chrome.tabs.query({url: instruction.matchPatterns}, function(tabs) {
     //For matched tabs carry out the actions
       if(tabs!=null){
-      for(var i = 0; i < tabs.length; i++){
-        for(var j = 0; j < instruction.actions.length; j++){
+      for(var i = 0; i < instruction.actions.length; i++){
+        for(var j = 0; j < tabs.length; j++){
           performAction(instruction.actions[j], tabs[i].id);
         }
       }

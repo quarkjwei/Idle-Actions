@@ -8,6 +8,7 @@ $(document).ready(function() {
     panel.find(".url-container").html(urlGroup);
     panel.find(".action-container").html(actionGroup);
     panel.find(".index").html($(".index").length);
+    panel.addClass('item');
     panel.hide();
     $("form").append(panel);
     panel.slideDown();
@@ -56,8 +57,8 @@ $(document).ready(function() {
       marked.remove();
     });
   });
-  //
-  $("body").on("change", ".form-control", function(){
+  //Changed Action
+  $("body").on("change", ".action-type", function(){
     var value = $(this).val();
     $(this).parent().nextAll().remove();
     if(value == "Goto") {
@@ -68,6 +69,41 @@ $(document).ready(function() {
       var inputGroup = $("#action_templates").children(":nth-child(2)").html();
       $(this).parent().after(inputGroup);
     }
+  });
+  $("body").on("focusout", ".idle-time", function(){
+    var value = $(this).val();
+    if(value < 15) {
+      $(this).val(15);
+    }
+    else {
+      $(this).val(Math.round(value));
+    }
+  });
+  $(".save-button").click(function(){
+    var itemset = [];
+    $(".item").each(function(){
+      var item = new Object();
 
+      item.matchPatterns = [];
+      $(this).find('.url-pattern').each(function(){
+        item["matchPatterns"].push($(this).val());
+      });
+
+      item["time"] = $(this).find('.idle-time').val();
+
+      item["actions"] = [];
+      $(this).find('.action-container').find('.form-group').each(function(){
+        var action = new Object();
+        action["type"] = $(this).find('.action-type').val();
+        if(action["type"] != "close"){
+          action["target"] = $(this).find('.target').val();
+          action["modifier"] = $(this).find('.modifier').val();
+        }
+        item["actions"].push(action);
+      });
+      itemset.push(item);
+    });
+    chrome.storage.local.set({'itemset': itemset}, function(){
+    });
   });
 });
