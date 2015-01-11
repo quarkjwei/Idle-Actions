@@ -11,6 +11,14 @@ chrome.storage.local.get("itemset", function(result){
   if(instructions.length < 1)
     throw new Error("There are no instructions to follow!");
 });
+//Reload data when saved
+chrome.storage.onChanged.addListener(function(changes, namespace){
+  if(changes["itemset"])
+    instructions = changes["itemset"].newValue;
+  instructions.sort(function(a, b){return a["time"]-b["time"]});
+  var counter = 0;
+  chrome.idle.setDetectionInterval(instructions[counter]["time"]);
+});
 //example of using a message handler from the inject scripts
 chrome.extension.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -48,7 +56,7 @@ chrome.extension.onMessage.addListener(
 
   });
 
-function performAction(action, tabId){
+function performAction(action, tabId, first){
   if(action.type == "Close"){
     chrome.tabs.remove(tabId);
   }
@@ -57,10 +65,12 @@ function performAction(action, tabId){
       action.modifier = "Matched Tabs";
     if(action.modifier == "Matched Tabs")
       chrome.tabs.update(tabId, {url: action.target});
-    else if(action.modifier == "New Tab")
-      chrome.tabs.create({url: action.target});
-    else if(action.modifier == "New Window")
-      chrome.windows.create({url: action.target})
+    if(first){
+      if(action.modifier == "New Tab")
+        chrome.tabs.create({url: action.target});
+      else if(action.modifier == "New Window")
+        chrome.windows.create({url: action.target})
+    }
   }
   else if(action.type == "Goto and Close"){
     if(!action.modifier)
@@ -69,7 +79,7 @@ function performAction(action, tabId){
       var tabid = tab.id;
       chrome.tabs.onUpdated.addListener(function(tabid, changeInfo){
         if(changeInfo.status == "complete"){
-          setTimeout(function(){chrome.tabs.remove(tab.id);}, action.modifier);
+          setTimeout(function(){chrome.tabs.remove(tabid);}, action.modifier);
         }
       });
     });
@@ -80,9 +90,12 @@ function applyInstructionToTabs(instruction){
   chrome.tabs.query({url: instruction.matchPatterns}, function(tabs) {
     //For matched tabs carry out the actions
       if(tabs!=null){
+      var first;
       for(var i = 0; i < instruction.actions.length; i++){
+        first = true;
         for(var j = 0; j < tabs.length; j++){
-          performAction(instruction.actions[j], tabs[i].id);
+          performAction(instruction.actions[i], tabs[j].id, first);
+          first = false;
         }
       }
     }
