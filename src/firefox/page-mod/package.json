@@ -1,9 +1,66 @@
 {
-  "name": "page-mod",
-  "title": "page-mod",
+  "name": "idle-actions",
+  "title": "Idle Actions",
   "id": "jid1-z9nyKlnyhdkYZQ",
   "description": "a basic add-on",
-  "author": "",
+  "author": "John Heng",
   "license": "MPL 2.0",
-  "version": "0.1"
+  "version": "0.1",
+
+  "preferences": [{
+        "name": "idleTime",
+        "title": "Idle Time",
+        "description": "Amount of time before idling",
+        "type": "integer",
+        "value": 10
+    },
+    {
+        "name": "idleUnit",
+        "title": "Unit of time",
+        "description": "Unit for idling",
+        "type": "menulist",
+        "value": 1,
+        "options": [
+        	{
+        		"value": "1",
+        		"label": "secs"
+        	},
+        	{
+        		"value": "60",
+        		"label": "mins"
+        	},
+        	{
+        		"value": "3600",
+        		"label": "hrs"
+        	}
+        ]
+    },
+    {
+        "name": "idleAction",
+        "title": "Action",
+        "description": "Action to do upon idling",
+        "type": "menulist",
+        "value": 0,
+        "options": [
+        	{
+        		"value": "0",
+        		"label": "Close"
+        	},
+        	{
+        		"value": "1",
+        		"label": "Go to"
+        	},
+        	{
+        		"value": "2",
+        		"label": "Go to and Close"
+        	}
+        ]
+    },
+    {
+		    "type": "string",
+		    "description": "List of URLs, use pattern matching syntax and separate with a comma. Ex: \"*.vcu.*, *.google.*\" ",
+		    "name": "urlList",
+		    "value": "*.vcu.*",
+		    "title": "URL List"
+		}]
 }

@@ -25,6 +25,12 @@ function runScript(tab) {
 // Import the page-mod API
 var pageMod = require("sdk/page-mod");
 var self = require("sdk/self");
+
+//use this to pull preferences from the simple-prefs sdk
+var preferences = require("sdk/simple-prefs").prefs;
+
+console.log(preferences.idleUnit);
+console.log(preferences.urlList);
  
 // Create a page mod
 // It will run a script whenever a pattern is matched with the below array
@@ -34,6 +40,10 @@ pageMod.PageMod({
   contentScriptFile: self.data.url("my-script.js"),
   //contentScript: 'document.body.innerHTML = ' +
   //               ' "<h1>Page matches ruleset</h1>";'
+  onAttach: function(worker) {
+    var time = preferences.idleTime;
+    worker.port.emit("getIdleTime", time);
+  }
 });
 
 //*.vcu.*
