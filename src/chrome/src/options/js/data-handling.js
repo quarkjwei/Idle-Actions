@@ -1,4 +1,10 @@
 $(document).ready(function() {
+  //Load Data
+  chrome.storage.local.get("itemset", function(result){
+    var itemset = result.itemset;
+    if(itemset.length > 1)
+      loadData(itemset);
+  });
   //Buttons
   //Add Items
   $(".add-item").click(function(){
@@ -8,6 +14,7 @@ $(document).ready(function() {
     panel.find(".url-container").html(urlGroup);
     panel.find(".action-container").html(actionGroup);
     panel.find(".index").html($(".index").length);
+    panel.addClass('item');
     panel.hide();
     $("form").append(panel);
     panel.slideDown();
@@ -56,8 +63,8 @@ $(document).ready(function() {
       marked.remove();
     });
   });
-  //
-  $("body").on("change", ".form-control", function(){
+  //Changed Action
+  $("body").on("change", ".action-type", function(){
     var value = $(this).val();
     $(this).parent().nextAll().remove();
     if(value == "Goto") {
@@ -68,6 +75,70 @@ $(document).ready(function() {
       var inputGroup = $("#action_templates").children(":nth-child(2)").html();
       $(this).parent().after(inputGroup);
     }
+  });
+  $("body").on("focusout", ".idle-time", function(){
+    var value = $(this).val();
+    if(value < 15) {
+      $(this).val(15);
+    }
+    else {
+      $(this).val(Math.round(value));
+    }
+  });
+  $(".save-button").click(function(){
+    var itemset = [];
+    $(".item").each(function(){
+      var item = new Object();
 
+      item.matchPatterns = [];
+      $(this).find('.url-pattern').each(function(){
+        item["matchPatterns"].push($(this).val());
+      });
+
+      item["time"] = $(this).find('.idle-time').val();
+
+      item["actions"] = [];
+      $(this).find('.action-container').find('.form-group').each(function(){
+        var action = new Object();
+        action["type"] = $(this).find('.action-type').val();
+        if(action["type"] != "Close"){
+          action["target"] = $(this).find('.target').val();
+          action["modifier"] = $(this).find('.modifier').val();
+        }
+        item["actions"].push(action);
+      });
+      itemset.push(item);
+    });
+    chrome.storage.local.set({'itemset': itemset}, function(){
+    });
   });
 });
+function loadData(itemset){
+  for(var i = 0; i < itemset.length; i++){
+    //Fill the url-pattern fields
+    $(".add-item").click();
+    for(var j = 0; j < itemset[i]["matchPatterns"].length; j++){
+      if(j > 0)
+        $(".add-url-pattern").eq(i).click();
+      $(".item").eq(i).find(".url-pattern").eq(j).val(itemset[i]["matchPatterns"][j]);
+    }
+    //Fill the idle time field
+    $(".idle-time").eq(i).val(itemset[i]["time"]);
+    //Fill the action fields
+    for(var j = 0; j < itemset[i]["actions"].length; j++){
+      if(j > 0)
+        $(".add-action").eq(i).click();
+      var actionForm = $(".item").eq(i).find(".action-container").find(".form-group").eq(j);
+      var actionType = itemset[i]["actions"][j]["type"];
+      actionForm.find(".action-type").val(actionType);
+      actionForm.find(".action-type").trigger("change");
+      if(actionType != "Close"){
+        actionForm.find(".target").val(itemset[i]["actions"][j]["target"]);
+        actionForm.find(".modifier").val(itemset[i]["actions"][j]["modifier"]);
+      }
+    }
+  }
+}
+function clearData(){
+
+}
