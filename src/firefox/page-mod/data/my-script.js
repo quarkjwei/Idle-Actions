@@ -8,8 +8,9 @@
 
 var inactivityTime = function () {
     var t;
+    var timeoutVariable;
     //var idleTime = 6000; 
-    idleTime = 0;
+    idleTime = 5000;
 
     self.port.on("getIdleTime", function(time){
         console.log("getIdleTime: " + time);
@@ -17,7 +18,6 @@ var inactivityTime = function () {
         //idlingTime = time * 1000;
         console.log("idleTime: " + idleTime);
         document.onload = setTimer(idleTime);
-
     })
     
     //console.log("idlingTime: " + idlingTime);
@@ -53,14 +53,39 @@ var inactivityTime = function () {
 
     function setTimer(){
         console.log("setTime: " + idleTime);
+        //var x = false;
         t = setTimeout(logout, idleTime);
+        if(idleTime >= 10000)
+        {
+            timeoutVariable = setTimeout(function()
+            {
+                if(confirm('Are you still there?') == true)
+                {
+                    console.log("timer was reset");
+                    resetTimer();
+                }
+            }, idleTime - 5000);
+        }
         console.log(new Date().toTimeString() + ": timer set to " + idleTime);
     }
 
     function resetTimer() {
+        //var x = false;
         console.log("resetTimer: " + idleTime);
         clearTimeout(t);
+        window.clearTimeout(timeoutVariable)
         t = setTimeout(logout, idleTime);
+        if(idleTime > 10000)
+        {
+            timeoutVariable = setTimeout(function()
+            {
+                if(confirm('Are you still there?') == true)
+                {
+                    console.log("timer was reset");
+                    resetTimer();
+                }
+            }, idleTime - 5000);
+        }
         // 1000 milisec = 1 sec
         console.log(new Date().toTimeString() + ": active");
     }

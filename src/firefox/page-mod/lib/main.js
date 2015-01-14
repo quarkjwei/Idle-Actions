@@ -25,6 +25,7 @@ function runScript(tab) {
 // Import the page-mod API
 var pageMod = require("sdk/page-mod");
 var self = require("sdk/self");
+//var tabs = require("sdk/tabs");
 
 //use this to pull preferences from the simple-prefs sdk
 var preferences = require("sdk/simple-prefs").prefs;

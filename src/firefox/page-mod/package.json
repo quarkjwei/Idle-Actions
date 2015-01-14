@@ -12,7 +12,7 @@
         "title": "Idle Time",
         "description": "Amount of time before idling",
         "type": "integer",
-        "value": 10
+        "value": 15
     },
     {
         "name": "idleUnit",
