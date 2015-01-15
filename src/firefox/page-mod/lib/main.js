@@ -43,7 +43,9 @@ pageMod.PageMod({
   //               ' "<h1>Page matches ruleset</h1>";'
   onAttach: function(worker) {
     var time = preferences.idleTime;
+    var unit = preferences.idleUnit;
     worker.port.emit("getIdleTime", time);
+    worker.port.emit("getIdleUnit", unit);
   }
 });
 

@@ -10,13 +10,22 @@ var inactivityTime = function () {
     var t;
     var timeoutVariable;
     //var idleTime = 6000; 
-    idleTime = 5000;
+    //instantiate global variables
+    idleTime = 30000;
+    idleUnit = 1000;
 
     self.port.on("getIdleTime", function(time){
         console.log("getIdleTime: " + time);
-        idleTime = time * 1000;
+        idleTime = time;
         //idlingTime = time * 1000;
         console.log("idleTime: " + idleTime);
+        //document.onload = setTimer(idleTime);
+    })
+
+    self.port.on("getIdleUnit", function(unit){
+        console.log("getIdleUnit: " + unit);
+        idleTime = idleTime * (unit * 1000); //convert seconds to milliseconds
+        console.log("idleUnit: " + unit);
         document.onload = setTimer(idleTime);
     })
     
