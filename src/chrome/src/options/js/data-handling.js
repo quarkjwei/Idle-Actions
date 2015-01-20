@@ -2,7 +2,7 @@ $(document).ready(function() {
   //Load Data
   chrome.storage.local.get("itemset", function(result){
     var itemset = result.itemset;
-    if(itemset.length > 1)
+    if(itemset.length > 0)
       loadData(itemset);
   });
   //Buttons
@@ -17,6 +17,7 @@ $(document).ready(function() {
     panel.addClass('item');
     panel.hide();
     $("form").append(panel);
+    actionGroup.find(".action-type").trigger('change');
     panel.slideDown();
   });
   //Remove Items
@@ -46,6 +47,7 @@ $(document).ready(function() {
     actionGroup.find(".add-action").removeClass("add-action").addClass("remove-action");
     actionGroup.hide();
     $(this).parentsUntil(".panel-body").last().append(actionGroup);
+    actionGroup.find(".action-type").trigger('change');
     actionGroup.slideDown();
 
   });
@@ -67,15 +69,22 @@ $(document).ready(function() {
   $("body").on("change", ".action-type", function(){
     var value = $(this).val();
     $(this).parent().nextAll().remove();
-    if(value == "Goto") {
+    if(value == "Goto/Close") {
       var inputGroup = $("#action_templates").children(":nth-child(1)").html();
       $(this).parent().after(inputGroup);
     }
-    else if (value == "Goto and Close") {
-      var inputGroup = $("#action_templates").children(":nth-child(2)").html();
-      $(this).parent().after(inputGroup);
+  });
+  //Checkbox hider
+  $("body").on("change", ".hider", function(){
+    var hidee = $(this).closest('div').next('.hidee');
+    if(hidee.css('display') == "none"){
+      hidee.slideDown();
+    }
+    else{
+      hidee.slideUp();
     }
   });
+  //Fixers
   $("body").on("focusout", ".idle-time", function(){
     var value = $(this).val();
     if(value < 15) {
@@ -100,10 +109,16 @@ $(document).ready(function() {
       item["actions"] = [];
       $(this).find('.action-container').find('.form-group').each(function(){
         var action = new Object();
+        action["target"] = new Object();
+        action["modifier"] = new Object();
         action["type"] = $(this).find('.action-type').val();
-        if(action["type"] != "Close"){
-          action["target"] = $(this).find('.target').val();
-          action["modifier"] = $(this).find('.modifier').val();
+        if($(this).find('.target-url').is(':visible')){
+          action["target"]["url"] = $(this).find('.target-url').val();
+          action["target"]["window"] = $(this).find('.target-window').val();
+        }
+        if($(this).find('.modifier-type').is(':checked')){
+          action["modifier"]["type"] = $(this).find('.modifier-type').text();
+          action["modifier"]["value"] = $(this).find('.modifier-value').val();
         }
         item["actions"].push(action);
       });
@@ -126,15 +141,27 @@ function loadData(itemset){
     $(".idle-time").eq(i).val(itemset[i]["time"]);
     //Fill the action fields
     for(var j = 0; j < itemset[i]["actions"].length; j++){
+      var action = itemset[i]["actions"][j];
       if(j > 0)
         $(".add-action").eq(i).click();
       var actionForm = $(".item").eq(i).find(".action-container").find(".form-group").eq(j);
-      var actionType = itemset[i]["actions"][j]["type"];
-      actionForm.find(".action-type").val(actionType);
-      actionForm.find(".action-type").trigger("change");
-      if(actionType != "Close"){
-        actionForm.find(".target").val(itemset[i]["actions"][j]["target"]);
-        actionForm.find(".modifier").val(itemset[i]["actions"][j]["modifier"]);
+      if(action["target"]["url"]){
+        try{
+          actionForm.find(".target-checkbox").find("input").click();
+        }
+        finally{
+        actionForm.find(".target-url").val(action["target"]["url"]);
+        actionForm.find(".target-window").val(action["target"]["window"]);
+        }
+      }
+      if(action["modifier"]["type"]){
+        try{
+          actionForm.find(".modifier-type").find("input").click();
+        }
+        finally{
+        actionForm.find(".modifier-type").val(action["modifier"]["type"]);
+        actionForm.find(".modifier-value").val(action["modifier"]["value"]);
+        }
       }
     }
   }

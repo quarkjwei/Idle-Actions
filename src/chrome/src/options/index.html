@@ -80,9 +80,7 @@
 				</button>
 			</span>
 			<select class="form-control action-type">
-				<option>Close</option>
-				<option>Goto</option>
-				<option>Goto and Close</option>
+				<option>Goto/Close</option>
 			</select>
 			</span>
 		</div>
@@ -91,25 +89,36 @@
 </div>
 
 <div id="action_templates" class="hidden">
-	Goto
 	<div>
-		<input type="url" class="form-control target stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
-		<div class="input-group stacked">
-			<span class="input-group-addon">Open In</span>
-			<select class="form-control modifier modifier-goto stacked">
-				<option>Matched Tabs</option>
-				<option>New Tab</option>
-				<option>New Window</option>
-			</select>
+		<div class="checkbox form-control stacked">
+		    <label>
+		     	<span class="target-checkbox"><input type="checkbox" class="hider"> Goto</span>
+		    </label>
+		 </div>
+
+		<div class="hidee" style="display:none;">
+			<input type="url" class="form-control target-url stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
+			<div class="input-group stacked">
+				<span class="input-group-addon">Open In</span>
+				<select class="form-control target-window stacked">
+					<option>Matched Tabs</option>
+					<option>New Tab</option>
+					<option>New Window</option>
+				</select>
+			</div>
 		</div>
-	</div>
-	Goto and Close
-	<div>
-		<input type="url" class="form-control target stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
-		<div class="input-group stacked">
-			<span class="input-group-addon">Close After</span>
-			<input type="text" class="form-control modifier modifier-gotoandclose" aria-label="Idle Time">
-			<span class="input-group-addon">Milliseconds</span>
+
+		<div class="checkbox form-control stacked">
+		    <label>
+		     	<span class="modifier-type"><input type="checkbox" class="hider">Close</span>
+		    </label>
+		</div>
+		<div class="hidee" style="display:none;">
+			<div class="input-group stacked">
+				<span class="input-group-addon">Wait</span>
+				<input type="text" class="form-control modifier modifier-value" aria-label="Idle Time">
+				<span class="input-group-addon">Milliseconds</span>
+			</div>
 		</div>
 	</div>
 </div>

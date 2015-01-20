@@ -31,11 +31,9 @@ body{
   padding-top: 10px;
   z-index: 999;
 }
-
-.modifier-goto {
-  width: 150px !important;
-}
-.modifier-gotoandclose{
+.modifier-value{
   width: 5em !important;
 }
-.
+.hidee{
+  clear: both;
+}
