@@ -98,13 +98,13 @@ $(document).ready(function() {
     var itemset = [];
     $(".item").each(function(){
       var item = new Object();
-
+      item["datastructure"] = "FFv1";
       item.matchPatterns = [];
       $(this).find('.url-pattern').each(function(){
         item["matchPatterns"].push($(this).val());
       });
 
-      item["time"] = $(this).find('.idle-time').val();
+      item["time"] = parseInt($(this).find('.idle-time').val());
 
       item["actions"] = [];
       $(this).find('.action-container').find('.form-group').each(function(){
@@ -116,7 +116,7 @@ $(document).ready(function() {
           action["target"]["url"] = $(this).find('.target-url').val();
           action["target"]["window"] = $(this).find('.target-window').val();
         }
-        if($(this).find('.modifier-type').is(':checked')){
+        if($(this).find('.modifier-type').find("input").is(':checked')){
           action["modifier"]["type"] = $(this).find('.modifier-type').text();
           action["modifier"]["value"] = $(this).find('.modifier-value').val();
         }
