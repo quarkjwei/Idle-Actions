@@ -8,6 +8,42 @@ $(document).ready(function() {
       loadData(itemset);
   });
   //Buttons
+  //Header
+  $("body").on("click", ".nav a", function(){
+    var hash = $(this).attr('href').substring(1);
+    var homeTab = "#home-tab";
+    var tab = "#" + hash + "-tab";
+    var visiblepopdown = $("#header-popdown").children(".container").filter(":visible");
+    var popdown = $('.' + hash + '-popdown');
+    if(!hash) {
+      visiblepopdown.slideUp(function(){
+        setActive(homeTab);
+      }); 
+    } else if(visiblepopdown.is(popdown)) {
+      visiblepopdown.slideUp(function(){
+        setActive(homeTab);
+      });
+    } else {
+      if(visiblepopdown.length == 0){
+        popdown.css('display', 'none');
+        visiblepopdown = popdown;
+      }
+      visiblepopdown.slideUp(function(){
+        setActive(tab);
+        popdown.slideDown(function(){
+          switch(hash){
+              case "export":
+                updateExport();
+                break;
+              case "import":
+                popdown.find(".code-box").click();
+                break;
+          }
+        });
+      });
+    }
+  });
+  //Footer
   //Add Items
   $(".add-item").click(function(){
     var panel = $("#templates").children(":nth-child(1)").clone();
@@ -18,7 +54,7 @@ $(document).ready(function() {
     panel.find(".index").html($(".index").length);
     panel.addClass('item');
     panel.hide();
-    $("form").append(panel);
+    $("form").last().append(panel);
     actionGroup.find(".action-type").trigger('change');
     panel.slideDown();
   });
@@ -101,59 +137,18 @@ $(document).ready(function() {
     chrome.storage.local.set({'itemset': itemset}, function(){
     });
   });
-  //Import
-  $(".import-button").click(function(){
-    if($("#footer-popup").is(":visible")){
-      var repeat = $('#footer-popup').hasClass('export');
-      $("#footer-popup").slideUp(function(){
-        $("#footer-popup").html('');
-        $(".footer").css("height", "");
-        $("#footer-popup").removeClass();
-        if(repeat)
-          $(".import-button").click();
-      });
-    }
-    else{
-      $(".footer").css("height", "auto");
-      $("#footer-popup").addClass('import');
-      $("#footer-popup").html('<div class="alert alert-danger">Importing data will add to, not replace, existing data.'
-        + ' You must press the save button to save changes.</div>'
-        +'<textarea class="code-box form-control"></textarea>');
-      $("#footer-popup").append('<button type="button" class="btn btn-primary submit-import-button">'
-        +'Submit'
-      +'</button>');
-      $("#footer-popup").slideDown();
-    }
-  });
   //Submit Import Button
   $("body").on("click", ".submit-import-button", function(){
-    var data = $('.footer').find('.code-box').val();
+    var data = $('.import-popdown').find('.code-box').val();
     data = JSON.parse(data);
     loadData(data);
   });
-  //Export
-  $(".export-button").click(function(){
-    if($("#footer-popup").is(":visible")){
-      var repeat = $('#footer-popup').hasClass('import');
-      $("#footer-popup").slideUp(function(){
-        $("#footer-popup").html('');
-        $(".footer").css("height", "");
-        $("#footer-popup").removeClass();
-        if(repeat)
-          $(".export-button").click();
-      });
-    }
-    else{
-      $(".footer").css("height", "auto");
-      var JSONString = JSON.stringify(JSONifyData(), null, "\t");
-      $("#footer-popup").addClass('export');
-      $("#footer-popup").html('<pre class="code-box">'+JSONString+'</pre>');
-      $("#footer-popup").slideDown();
-    }
-  });
   //Select all text for export codebox
-  $("body").on("click", ".export", function(){
-    selectText($(this)[0]);
+  $("body").on("click", ".code-box", function(){
+    if($(this).is("textarea"))
+      $(this).select();
+    else
+      selectText($(this)[0]);
   });
   //Prompt on exit without saving
 });
@@ -235,7 +230,8 @@ function clearData(){
 //SelectText function modified from http://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
 function selectText(element) {
     var doc = document
-        , range, selection;    
+        , range, selection
+    ;    
     if (doc.body.createTextRange) {
         range = document.body.createTextRange();
         range.moveToElementText(element);
@@ -248,15 +244,12 @@ function selectText(element) {
         selection.addRange(range);
     }
 }
-function flash(duration){
-  slideRight();
-  
+function setActive(selector){
+  $(".nav .active").removeClass();
+  $(selector).addClass('active');
 }
-//reveal
-function slideRight(element){
-
-}
-//hide
-function slideLeft(){
-
+function updateExport(){
+  var JSONString = JSON.stringify(JSONifyData(), null, "\t");
+  $(".export").html(JSONString);
+  $(".export").click();
 }
