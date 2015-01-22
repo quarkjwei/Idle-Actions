@@ -24,22 +24,25 @@ $(document).ready(function() {
         setActive(homeTab);
       });
     } else {
+      var delay = 400;
       if(visiblepopdown.length == 0){
-        popdown.css('display', 'none');
-        visiblepopdown = popdown;
+        visiblepopdown = $("#scapegoat");
+        delay = 0;
       }
-      visiblepopdown.slideUp(function(){
+      visiblepopdown.slideUp(delay, function(){
         setActive(tab);
-        popdown.slideDown(function(){
-          switch(hash){
-              case "export":
-                updateExport();
-                break;
-              case "import":
-                popdown.find(".code-box").click();
-                break;
-          }
-        });
+        popdown.slideDown();
+        switch(hash){
+          case "export":
+            updateExport();
+            popdown.find(".export").click();
+            break;
+          case "import":
+            popdown.find(".import").click();
+            break;
+        }
+        if(visiblepopdown.is("#scapegoat"))
+          visiblepopdown.slideDown(delay);
       });
     }
   });
@@ -251,5 +254,4 @@ function setActive(selector){
 function updateExport(){
   var JSONString = JSON.stringify(JSONifyData(), null, "\t");
   $(".export").html(JSONString);
-  $(".export").click();
 }
