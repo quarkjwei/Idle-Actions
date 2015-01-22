@@ -39,6 +39,7 @@ function performAction(action, tabId, first){
       });
     }
     else if(first){
+      console.log(action["target"]["window"])
       if(action["target"]["window"] == "New Tab"){
         chrome.tabs.create({url: action["target"]["url"]}, function(tab){
           if(action["modifier"]["type"] == "Close")
@@ -53,33 +54,6 @@ function performAction(action, tabId, first){
       }
     }
   }
-  // if(action.type == "Close"){
-  //   chrome.tabs.remove(tabId);
-  // }
-  // else if(action.type == "Goto"){
-  //   if(!action.modifier)
-  //     action.modifier = "Matched Tabs";
-  //   if(action.modifier == "Matched Tabs")
-  //     chrome.tabs.update(tabId, {url: action.target});
-  //   if(first){
-  //     if(action.modifier == "New Tab")
-  //       chrome.tabs.create({url: action.target});
-  //     else if(action.modifier == "New Window")
-  //       chrome.windows.create({url: action.target})
-  //   }
-  // }
-  // else if(action.type == "Goto and Close"){
-  //   if(!action.modifier)
-  //     action.modifier = 0;
-  //   chrome.tabs.create({url: action.target}, function(tab){
-  //     var tabid = tab.id;
-  //     chrome.tabs.onUpdated.addListener(function(tabid, changeInfo){
-  //       if(changeInfo.status == "complete"){
-  //         setTimeout(function(){chrome.tabs.remove(tabid);}, action.modifier);
-  //       }
-  //     });
-  //   });
-  // }
 }
 
 function applyInstructionToTabs(item){
