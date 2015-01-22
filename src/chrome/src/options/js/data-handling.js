@@ -1,7 +1,9 @@
+var dataversion = "C.1";
+var itemset;
 $(document).ready(function() {
   //Load Data
   chrome.storage.local.get("itemset", function(result){
-    var itemset = result.itemset;
+    itemset = result.itemset;
     if(itemset.length > 0)
       loadData(itemset);
   });
@@ -114,7 +116,8 @@ $(document).ready(function() {
     else{
       $(".footer").css("height", "auto");
       $("#footer-popup").addClass('import');
-      $("#footer-popup").html('<p>Importing data will add to existing data. You must press the save button to save changes.</p>'
+      $("#footer-popup").html('<div class="alert alert-danger">Importing data will add to, not replace, existing data.'
+        + ' You must press the save button to save changes.</div>'
         +'<textarea class="code-box form-control"></textarea>');
       $("#footer-popup").append('<button type="button" class="btn btn-primary submit-import-button">'
         +'Submit'
@@ -148,11 +151,11 @@ $(document).ready(function() {
       $("#footer-popup").slideDown();
     }
   });
-
-});
-//Select all text for export codebox
-$("body").on("focusin", ".code-box", function(){
-  $(this).select();
+  //Select all text for export codebox
+  $("body").on("click", ".export", function(){
+    selectText($(this)[0]);
+  });
+  //Prompt on exit without saving
 });
 function loadData(itemset){
   var existing = $(".item").length;
@@ -198,7 +201,7 @@ function JSONifyData(){
   var itemset = [];
     $(".item").each(function(){
       var item = new Object();
-      item["datastructure"] = "FFv1";
+      item["datastructure"] = dataversion;
       item.matchPatterns = [];
       $(this).find('.url-pattern').each(function(){
         item["matchPatterns"].push($(this).val());
@@ -227,5 +230,33 @@ function JSONifyData(){
   return itemset;
 }
 function clearData(){
+
+}
+//SelectText function modified from http://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
+function selectText(element) {
+    var doc = document
+        , range, selection;    
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();        
+        range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+function flash(duration){
+  slideRight();
+  
+}
+//reveal
+function slideRight(element){
+
+}
+//hide
+function slideLeft(){
 
 }
