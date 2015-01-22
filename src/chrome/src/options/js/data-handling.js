@@ -95,7 +95,107 @@ $(document).ready(function() {
     }
   });
   $(".save-button").click(function(){
-    var itemset = [];
+    var itemset = JSONifyData();
+    chrome.storage.local.set({'itemset': itemset}, function(){
+    });
+  });
+  //Import
+  $(".import-button").click(function(){
+    if($("#footer-popup").is(":visible")){
+      var repeat = $('#footer-popup').hasClass('export');
+      $("#footer-popup").slideUp(function(){
+        $("#footer-popup").html('');
+        $(".footer").css("height", "");
+        $("#footer-popup").removeClass();
+        if(repeat)
+          $(".import-button").click();
+      });
+    }
+    else{
+      $(".footer").css("height", "auto");
+      $("#footer-popup").addClass('import');
+      $("#footer-popup").html('<p>Importing data will add to existing data. You must press the save button to save changes.</p>'
+        +'<textarea class="code-box form-control"></textarea>');
+      $("#footer-popup").append('<button type="button" class="btn btn-primary submit-import-button">'
+        +'Submit'
+      +'</button>');
+      $("#footer-popup").slideDown();
+    }
+  });
+  //Submit Import Button
+  $("body").on("click", ".submit-import-button", function(){
+    var data = $('.footer').find('.code-box').val();
+    data = JSON.parse(data);
+    loadData(data);
+  });
+  //Export
+  $(".export-button").click(function(){
+    if($("#footer-popup").is(":visible")){
+      var repeat = $('#footer-popup').hasClass('import');
+      $("#footer-popup").slideUp(function(){
+        $("#footer-popup").html('');
+        $(".footer").css("height", "");
+        $("#footer-popup").removeClass();
+        if(repeat)
+          $(".export-button").click();
+      });
+    }
+    else{
+      $(".footer").css("height", "auto");
+      var JSONString = JSON.stringify(JSONifyData(), null, "\t");
+      $("#footer-popup").addClass('export');
+      $("#footer-popup").html('<pre class="code-box">'+JSONString+'</pre>');
+      $("#footer-popup").slideDown();
+    }
+  });
+
+});
+//Select all text for export codebox
+$("body").on("focusin", ".code-box", function(){
+  $(this).select();
+});
+function loadData(itemset){
+  var existing = $(".item").length;
+  for(var i = 0; i < itemset.length; i++){
+    //Fill the url-pattern fields
+    $(".add-item").click();
+    var item = $(".item").eq(i + existing);
+    for(var j = 0; j < itemset[i]["matchPatterns"].length; j++){
+      if(j > 0)
+        item.find(".add-url-pattern").click();
+      item.find(".url-pattern").eq(j).val(itemset[i]["matchPatterns"][j]);
+    }
+    //Fill the idle time field
+    item.find(".idle-time").val(itemset[i]["time"]);
+    //Fill the action fields
+    for(var j = 0; j < itemset[i]["actions"].length; j++){
+      var action = itemset[i]["actions"][j];
+      if(j > 0)
+        item.find(".add-action").click();
+      var actionForm = item.find(".action-container").find(".form-group").eq(j);
+      if(action["target"]["url"]){
+        try{
+          actionForm.find(".target-checkbox").find("input").click();
+        }
+        finally{
+        actionForm.find(".target-url").val(action["target"]["url"]);
+        actionForm.find(".target-window").val(action["target"]["window"]);
+        }
+      }
+      if(action["modifier"]["type"]){
+        try{
+          actionForm.find(".modifier-type").find("input").click();
+        }
+        finally{
+        actionForm.find(".modifier-type").val(action["modifier"]["type"]);
+        actionForm.find(".modifier-value").val(action["modifier"]["value"]);
+        }
+      }
+    }
+  }
+}
+function JSONifyData(){
+  var itemset = [];
     $(".item").each(function(){
       var item = new Object();
       item["datastructure"] = "FFv1";
@@ -124,47 +224,7 @@ $(document).ready(function() {
       });
       itemset.push(item);
     });
-    chrome.storage.local.set({'itemset': itemset}, function(){
-    });
-  });
-});
-function loadData(itemset){
-  for(var i = 0; i < itemset.length; i++){
-    //Fill the url-pattern fields
-    $(".add-item").click();
-    for(var j = 0; j < itemset[i]["matchPatterns"].length; j++){
-      if(j > 0)
-        $(".add-url-pattern").eq(i).click();
-      $(".item").eq(i).find(".url-pattern").eq(j).val(itemset[i]["matchPatterns"][j]);
-    }
-    //Fill the idle time field
-    $(".idle-time").eq(i).val(itemset[i]["time"]);
-    //Fill the action fields
-    for(var j = 0; j < itemset[i]["actions"].length; j++){
-      var action = itemset[i]["actions"][j];
-      if(j > 0)
-        $(".add-action").eq(i).click();
-      var actionForm = $(".item").eq(i).find(".action-container").find(".form-group").eq(j);
-      if(action["target"]["url"]){
-        try{
-          actionForm.find(".target-checkbox").find("input").click();
-        }
-        finally{
-        actionForm.find(".target-url").val(action["target"]["url"]);
-        actionForm.find(".target-window").val(action["target"]["window"]);
-        }
-      }
-      if(action["modifier"]["type"]){
-        try{
-          actionForm.find(".modifier-type").find("input").click();
-        }
-        finally{
-        actionForm.find(".modifier-type").val(action["modifier"]["type"]);
-        actionForm.find(".modifier-value").val(action["modifier"]["value"]);
-        }
-      }
-    }
-  }
+  return itemset;
 }
 function clearData(){
 

@@ -27,13 +27,28 @@ body{
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
+  max-height: 70%;
   background: #020202;
   padding-top: 10px;
+  padding-bottom: 10px;
   z-index: 999;
+}
+.footer p{
+  color: white;
+  font-weight: bold;
+}
+#footer-buttons{
+  padding-bottom:10px;
 }
 .modifier-value{
   width: 5em !important;
 }
 .hidee{
   clear: both;
+}
+textarea.code-box{
+  height: 250px;
+}
+pre.code-box{
+  height: 250px;
 }
