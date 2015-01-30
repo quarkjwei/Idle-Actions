@@ -26,16 +26,36 @@ body{
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 60px;
   background: #020202;
+  height: 60px;
   padding-top: 10px;
+  padding-bottom: 10px;
   z-index: 999;
 }
-
-.modifier-goto {
-  width: 150px !important;
+#header-popdown{
+  background: #080808;
+  width: 100%;
+  max-height: 70%;  
 }
-.modifier-gotoandclose{
+.footer p{
+  color: white;
+  font-weight: bold;
+}
+#footer-buttons{
+  padding-bottom:10px;
+}
+.modifier-value{
   width: 5em !important;
 }
-.
+.hidee{
+  clear: both;
+}
+textarea.code-box{
+  height: 250px;
+}
+pre.code-box{
+  height: 250px;
+}
+.navbar-brand{
+  cursor: default;
+}

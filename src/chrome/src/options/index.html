@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,15 +11,39 @@
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div id="header-popdown">
+			<div class="container prefs-popdown" style="display: none;">
+				<div class="preferences-appearance col-xs-6">
+				</div>
+				<div class="preferences-password col-xs-6">
+					<form class="form-horizontal">
+		  				<div class="form-group ">
+							<input type="url" class="form-control old-password" aria-label="Enter Old Password" placeholder="Old Password" disabled>
+							<input type="url" class="form-control new-password" aria-label="Enter New Password" placeholder="New Password">
+							<input type="url" class="form-control confirm-password" aria-label="Confirm Password" placeholder="Confirm Password">
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="container import-popdown" style="display: none;">
+				<div class="alert alert-danger">Importing data will add to, not replace, existing data. You must press the save button to save changes.</div>
+        		<textarea class="code-box form-control import"></textarea>
+        		<button type="button" class="btn btn-primary submit-import-button">Submit</button>
+			</div>
+			<div class="container export-popdown" style="display: none;">
+				<pre class="code-box export"></pre>
+			</div>
+		</div>
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Idle Actions</a>
+				<span class="navbar-brand">Idle Actions</span>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#prefs">Preferences</a></li>
-					<li><a href="#import-export">Import/Export</a></li>
+					<li id="home-tab" class="active"><a href="#">Home</a></li>
+					<li id="prefs-tab"><a href="#prefs">Preferences</a></li>
+					<li id="import-tab"><a href="#import">Import</a></li>
+					<li id="export-tab"><a href="#export">Export</a></li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
@@ -29,12 +54,16 @@
 </div>
 <footer class="footer">
 	<div class="container">
-		<button type="button" class="btn btn-success add-item">
-			Add Item
-		</button>
-		<button type="button" class="btn btn-primary save-button">
-			Save
-		</button>
+		<div id="footer-buttons">
+			<button type="button" class="btn btn-success add-item">
+				Add Item
+			</button>
+			<button type="button" class="btn btn-primary save-button">
+				Save
+			</button>
+		</div>
+		<div id="footer-popup" style="display: none;">
+		</div>
 	</div>
 </footer>
 <div id="templates" class="hidden">
@@ -80,9 +109,7 @@
 				</button>
 			</span>
 			<select class="form-control action-type">
-				<option>Close</option>
-				<option>Goto</option>
-				<option>Goto and Close</option>
+				<option>Goto/Close</option>
 			</select>
 			</span>
 		</div>
@@ -91,28 +118,40 @@
 </div>
 
 <div id="action_templates" class="hidden">
-	Goto
 	<div>
-		<input type="url" class="form-control target stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
-		<div class="input-group stacked">
-			<span class="input-group-addon">Open In</span>
-			<select class="form-control modifier modifier-goto stacked">
-				<option>Matched Tabs</option>
-				<option>New Tab</option>
-				<option>New Window</option>
-			</select>
+		<div class="checkbox form-control stacked">
+		    <label>
+		     	<span class="target-checkbox"><input type="checkbox" class="hider"> Goto</span>
+		    </label>
+		 </div>
+
+		<div class="hidee" style="display:none;">
+			<input type="url" class="form-control target-url stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
+			<div class="input-group stacked">
+				<span class="input-group-addon">Open In</span>
+				<select class="form-control target-window stacked">
+					<option>Matched Tabs</option>
+					<option>New Tab</option>
+					<option>New Window</option>
+				</select>
+			</div>
 		</div>
-	</div>
-	Goto and Close
-	<div>
-		<input type="url" class="form-control target stacked" aria-label="Enter Target URL" placeholder="Enter Target URL">
-		<div class="input-group stacked">
-			<span class="input-group-addon">Close After</span>
-			<input type="text" class="form-control modifier modifier-gotoandclose" aria-label="Idle Time">
-			<span class="input-group-addon">Milliseconds</span>
+
+		<div class="checkbox form-control stacked">
+		    <label>
+		     	<span class="modifier-type"><input type="checkbox" class="hider">Close</span>
+		    </label>
+		</div>
+		<div class="hidee" style="display:none;">
+			<div class="input-group stacked">
+				<span class="input-group-addon">Wait</span>
+				<input type="text" class="form-control modifier modifier-value" aria-label="Idle Time">
+				<span class="input-group-addon">Milliseconds</span>
+			</div>
 		</div>
 	</div>
 </div>
-
+<div id="scapegoat">
+</div>
 </body>
 </html>
