@@ -60,7 +60,7 @@
 		    "type": "string",
 		    "description": "List of URLs, use pattern matching syntax and separate with a comma. Ex: \"*.vcu.*, *.google.*\" ",
 		    "name": "urlList",
-		    "value": "*.vcu.*",
+		    "value": "https://my.vcu.edu/c/portal/logout,https://accounts.google.com/logout",
 		    "title": "URL List"
 		}]
 }

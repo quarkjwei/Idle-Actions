@@ -8,7 +8,7 @@
 
 var inactivityTime = function () {
     var t;
-    var timeoutVariable;
+    //var timeoutVariable;
     //var idleTime = 6000; 
     //instantiate global variables
     idleTime = 30000;
@@ -42,29 +42,30 @@ var inactivityTime = function () {
         //alert("You are now logged out.")
 
         //location.href = 'https://accounts.google.com/logout';
-        location.href = 'https://my.vcu.edu/c/portal/logout';
+        /*location.href = 'https://my.vcu.edu/c/portal/logout';
         
         console.log(new Date().toTimeString() + ": away");
 
         //tab - new tab
         if(modifier == "tab"){
-        	//go to new tab
+            //go to new tab
         }
         //window - new window
         else if(modifier == "window"){
-        	//go to new window
+            //go to new window
         }
         //update - same tab
         else if(modifier == "update"){
-        	//update tab
-        }
+            //update tab
+        }*/
+        self.port.emit("script-response", "logout");
     }
 
     function setTimer(){
         console.log("setTime: " + idleTime);
         //var x = false;
         t = setTimeout(logout, idleTime);
-        if(idleTime >= 10000)
+        /*if(idleTime >= 10000)
         {
             timeoutVariable = setTimeout(function()
             {
@@ -74,17 +75,19 @@ var inactivityTime = function () {
                     resetTimer();
                 }
             }, idleTime - 5000);
-        }
+        }*/
         console.log(new Date().toTimeString() + ": timer set to " + idleTime);
     }
 
     function resetTimer() {
         //var x = false;
+        clearTimeout(t); 
+        //clearTimeout(timeoutVariable);
         console.log("resetTimer: " + idleTime);
-        clearTimeout(t);
-        window.clearTimeout(timeoutVariable)
+        
+        
         t = setTimeout(logout, idleTime);
-        if(idleTime > 10000)
+        /*if(idleTime > 10000)
         {
             timeoutVariable = setTimeout(function()
             {
@@ -94,7 +97,7 @@ var inactivityTime = function () {
                     resetTimer();
                 }
             }, idleTime - 5000);
-        }
+        }*/
         // 1000 milisec = 1 sec
         console.log(new Date().toTimeString() + ": active");
     }
