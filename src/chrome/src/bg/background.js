@@ -1,7 +1,7 @@
 var items, counter;
 chrome.storage.local.get("itemset", function(result){
     items = result.itemset;
-    items.sort(function(a, b){return a["time"]-b["time"]});  
+    items.sort(function(a, b){return a["time"]-b["time"]});
     counter = 0;
     chrome.idle.setDetectionInterval(items[counter]["time"]);
 });
@@ -79,11 +79,3 @@ function closeTab(tabId, delay){
     }
   });
 }
-//Reload data when saved
-// chrome.storage.onChanged.addListener(function(changes, namespace){
-//   if(changes["itemset"])
-//     items = changes["itemset"].newValue;
-//   items.sort(function(a, b){return a["time"]-b["time"]});
-//   var counter = 0;
-//   chrome.idle.setDetectionInterval(items[counter]["time"]);
-// });
