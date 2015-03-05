@@ -62,5 +62,15 @@
 		    "name": "urlList",
 		    "value": "https://my.vcu.edu/c/portal/logout,https://accounts.google.com/logout",
 		    "title": "URL List"
-		}]
+	},
+    { 
+        "type": "boolint",
+        "name": "notification",
+        "on": "1",
+        "off": "2",
+        "value": 2,
+        "title": "Notifications",
+        "description": "Notify me when I'm idle"
+    }
+]
 }
