@@ -1,7 +1,7 @@
 var items, counter;
 chrome.storage.local.get("itemset", function(result){
     items = result.itemset;
-    items.sort(function(a, b){return a["time"]-b["time"]});
+    items.sort(function(a, b){return a["time"]-b["time"];});
     counter = 0;
     chrome.idle.setDetectionInterval(items[counter]["time"]);
 });
